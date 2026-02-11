@@ -1,4 +1,4 @@
-# ansible-playbook -i localhost, -e 'instances=["mongodb", "catalogue","redis","user","cart","mysql","shipping","rabbitmq","payment","frontend"]' roboshop.yaml
+# ansible-playbook -i localhost,   -e '{"instances":["mongodb","catalogue","redis","user","cart","mysql","shipping","rabbitmq","payment","frontend"]}'  -e action=destroy roboshop.yaml
 - name: create ec2 and r53 records
   hosts: all
   connection: local
@@ -47,7 +47,7 @@
     loop: "{{ ec2_output.results }}" # list
     when: action == "create"
 
-  - name: create r53 records
+  - name: create r53 record for frontend
     amazon.aws.route53:
       state: present
       zone: "{{ domain_name }}"
